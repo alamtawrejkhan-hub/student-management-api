@@ -3,17 +3,20 @@ package com.example.Student.Management;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
 public class StudentService {
 
     private final List<Student> students = new ArrayList<>();
+    private int nextId = 1;
 
     public StudentService() {
-        students.add(new Student(1, "Rahul", "rahul@example.com", "B.Tech Civil"));
-        students.add(new Student(2, "Aditi", "aditi@example.com", "BCA"));
-        students.add(new Student(3, "Sameer", "sameer@example.com", "BSc CS"));
+        // initial dummy data
+        students.add(new Student(nextId++, "Rahul", "rahul@example.com", "B.Tech Civil"));
+        students.add(new Student(nextId++, "Aditi", "aditi@example.com", "BCA"));
+        students.add(new Student(nextId++, "Sameer", "sameer@example.com", "BSc CS"));
     }
 
     public List<Student> getAllStudents() {
@@ -21,11 +24,13 @@ public class StudentService {
     }
 
     public Student addStudent(Student student) {
+        if (student.getId() == 0) {
+            student.setId(nextId++);
+        }
         students.add(student);
         return student;
     }
 
-    // updated: existing student update, nahi mila to add
     public Student updateStudent(int id, Student updated) {
         for (Student s : students) {
             if (s.getId() == id) {
@@ -35,13 +40,22 @@ public class StudentService {
                 return s;
             }
         }
-        // agar given id nahi mili, list me new entry add kar de
+        // agar nahi mila to naya add kar de (optional)
+        if (updated.getId() == 0) {
+            updated.setId(nextId++);
+        }
         students.add(updated);
         return updated;
     }
 
-    // delete student by id
     public void deleteStudent(int id) {
-        students.removeIf(s -> s.getId() == id);
+        Iterator<Student> it = students.iterator();
+        while (it.hasNext()) {
+            Student s = it.next();
+            if (s.getId() == id) {
+                it.remove();
+                break;
+            }
+        }
     }
 }

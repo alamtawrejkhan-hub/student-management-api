@@ -1,7 +1,10 @@
 package com.example.Student.Management;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,8 +22,9 @@ public class HelloController {
 
     // POST /students -> naya student add
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.addStudent(student);
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        Student saved = studentService.addStudent(student);   // id set + list me add
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     // PUT /students/{id} -> existing student update
