@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "https://effulgent-mousse-b1bd44.netlify.app")
 @RestController
 @RequestMapping("/students")
 public class HelloController {
